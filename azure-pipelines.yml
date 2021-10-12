@@ -19,13 +19,14 @@ steps:
   inputs:
     SourceFolder: '$(build.sourcesdirectory)'
     Contents: 'Readme.txt'
-    TargetFolder: '$(build.artifactstagingdirectory)'
+    TargetFolder: '$(DropLocation)'
+    OverWrite: true
 
 - task: DeleteFiles@1
   displayName: 'Remove Pipeline File'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: '*.yml'
+    Contents: '*.yml, Readme.txt'
     RemoveDotFiles: true
 
 - task: ArchiveFiles@2
@@ -33,10 +34,11 @@ steps:
     rootFolderOrFile: '$(Build.SourcesDirectory)'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(BuildVersion).zip'
+    archiveFile: '$(DropLocation)/$(BuildVersion).zip'
     replaceExistingArchive: true
 
 - task: CopyFiles@2
+  enabled: false
   displayName: 'Droping Zip & Txt File at Dropping Location'
   inputs:
     SourceFolder: '$(build.artifactstagingdirectory)'
