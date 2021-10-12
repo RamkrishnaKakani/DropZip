@@ -45,7 +45,6 @@ steps:
   displayName: Publish zip file
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: '$(Build.BuildId).zip'
     publishLocation: 'FilePath'
     TargetPath: '$(DropLocation)'
 
