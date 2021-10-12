@@ -3,12 +3,8 @@ trigger:
 - development
 
 variables:
-  ${{ if and(eq(variables['Build.SourceBranchName'], 'master'), ne(variables['Build.Reason'], 'PullRequest')) }}:
-     BuildVersion: $[counter(format('{0}.{1}.{2}',$(MajorVersion),$(MinorVersion),$(PatchVersion)), 0)]
-  ${{ if and(eq(variables['Build.SourceBranchName'], 'Development'), ne(variables['Build.Reason'], 'PullRequest')) }}:
-     BuildVersion: $[counter(format('{0}.{1}.{2}',$(MajorVersion),$(MinorVersion),$(PatchVersion)), 0)]
-  
-  BuildVersion: $[counter(format('{0}.{1}.{2}',$(MajorVersion),$(MinorVersion),$(PatchVersion)), 0)]
+  PatchVersion : $[counter(variables['PatchVersion'],4)]
+  BuildVersion: $(MajorVersion).$(MinorVersion).$(PatchVersion)
 
 steps:
 - powershell: |
