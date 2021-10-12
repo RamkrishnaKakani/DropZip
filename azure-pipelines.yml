@@ -10,6 +10,13 @@ steps:
 - checkout: self
   displayName: 'Download Files From Repository'
 
+- task: CopyFiles@2
+  displayName: 'Copy Readme.txt File '
+  inputs:
+    SourceFolder: '$(build.sourcesdirectory)'
+    Contents: 'Readme.txt'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
 - task: DeleteFiles@1
   displayName: 'Remove Pipeline File'
   inputs:
@@ -26,6 +33,7 @@ steps:
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
+  enabled: false
   displayName: Publish txt file
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
