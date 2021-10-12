@@ -3,15 +3,15 @@ trigger:
 - development
 
 variables:
-  ${{ if and(eq(variables['Build.SourceBranchName'], 'master')) }}:
+  ${{ if and(eq(variables['Build.SourceBranchName'], 'master'), ne(variables['Build.Reason'], 'PullRequest')) }}:
     PatchVersionMain : $[counter(variables['PatchVersionMain'],0)]
     BuildVersion: $(MajorVersionMain).$(MinorVersionMain).$(PatchVersionMain)
     DropLocation : C:\Users\R888066\Desktop\DropLocation\Master
 
-  ${{ if and(eq(variables['Build.SourceBranchName'], 'development')) }}:
+  ${{ if and(eq(variables['Build.SourceBranchName'], 'development'), ne(variables['Build.Reason'], 'PullRequest')) }}:
     PatchVersion : $[counter(variables['PatchVersion'],0)]
     BuildVersion: $(MajorVersion).$(MinorVersion).$(PatchVersion)
-    DropLocation : C:\Users\R888066\Desktop\DropLocation\Development
+    DropLocation : C:\Users\R888066\Desktop\DropLocation\Dev
 
 steps:
 - powershell: |
