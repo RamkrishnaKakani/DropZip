@@ -3,8 +3,15 @@ trigger:
 - development
 
 variables:
-  PatchVersion : $[counter(variables['PatchVersion'],4)]
-  BuildVersion: $(MajorVersion).$(MinorVersion).$(PatchVersion)
+  ${{ if and(eq(variables['Build.SourceBranchName'], 'master')) }}:
+    PatchVersionMain : $[counter(variables['PatchVersionMain'],0)]
+    BuildVersion: $(MajorVersionMain).$(MinorVersionMain).$(PatchVersionMain)
+    DropLocation : C:\Users\R888066\Desktop\DropLocation\Master
+
+  ${{ if and(eq(variables['Build.SourceBranchName'], 'development')) }}:
+    PatchVersion : $[counter(variables['PatchVersion'],0)]
+    BuildVersion: $(MajorVersion).$(MinorVersion).$(PatchVersion)
+    DropLocation : C:\Users\R888066\Desktop\DropLocation\Development
 
 steps:
 - powershell: |
@@ -23,42 +30,19 @@ steps:
     OverWrite: true
 
 - task: DeleteFiles@1
-  displayName: 'Remove Pipeline File'
+  displayName: 'Remove Unwanted Files'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: '*.yml, Readme.txt'
+    Contents: | 
+      *.yml
+      Readme.txt
     RemoveDotFiles: true
 
 - task: ArchiveFiles@2
+  displayName: 'Drop Zip file At DropLocation'
   inputs:
     rootFolderOrFile: '$(Build.SourcesDirectory)'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(DropLocation)/$(BuildVersion).zip'
     replaceExistingArchive: true
-
-- task: CopyFiles@2
-  enabled: false
-  displayName: 'Droping Zip & Txt File at Dropping Location'
-  inputs:
-    SourceFolder: '$(build.artifactstagingdirectory)'
-    Contents: '**'
-    TargetFolder: '$(DropLocation)'
-
-- task: PublishBuildArtifacts@1
-  enabled: false
-  displayName: Publish txt file
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'Readme.txt'
-    publishLocation: 'FilePath'
-    TargetPath: '$(DropLocation)'
-
-- task: PublishBuildArtifacts@1
-  enabled: false
-  displayName: Publish zip file
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    publishLocation: 'FilePath'
-    TargetPath: '$(DropLocation)'
-
