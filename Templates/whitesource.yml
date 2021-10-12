@@ -1,0 +1,8 @@
+steps:
+- script: echo Hello, WhiteSource!
+  displayName: 'WhiteSource 1'
+
+- script: |
+    echo This is WhiteSource Pipeline..!
+    echo Cron Job Demo By Ramkrishna..!
+  displayName: 'WhiteSource 2'

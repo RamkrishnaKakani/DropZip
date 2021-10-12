@@ -1,0 +1,37 @@
+schedules:
+- cron: "10 10 * * *"
+  displayName: Schedule Trigger
+  branches:
+    include:
+    - master
+
+stages:
+  - stage: BuildStageA
+    displayName : BuildStageA 
+    dependsOn: Demo_Stage
+    condition: or(succeeded(), eq(variables['Build.Reason'], 'Schedule'))
+    jobs:
+      - job: SampleJobA
+        steps:
+        - script: echo Hello, Build!
+          displayName: 'Run a one-line script'
+
+        - script: |
+            echo This is Build Pipeline..!
+            echo Cron Job Demo By Ramkrishna..!
+          displayName: 'Run a multi-line script'
+
+  - stage: BuildStageB
+    displayName : BuildStageB
+    dependsOn: Demo_Stage
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'Schedule'))
+    jobs:
+      - job: SampleJobB
+        steps:
+        - script: echo Hello, Build!
+          displayName: 'Run a one-line script'
+
+        - script: |
+            echo This is Build Pipeline..!
+            echo Cron Job Demo By Ramkrishna..!
+          displayName: 'Run a multi-line script'

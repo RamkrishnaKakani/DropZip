@@ -1,0 +1,8 @@
+steps:
+- script: echo Hello, Fortify!
+  displayName: 'Fortify 1'
+
+- script: |
+    echo This is Fortify Pipeline..!
+    echo Cron Job Demo By Ramkrishna..!
+  displayName: 'Fortify 2'
