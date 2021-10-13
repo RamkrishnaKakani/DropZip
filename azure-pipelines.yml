@@ -37,8 +37,7 @@ steps:
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: | 
-      *.yml
-      Readme.txt
+      **
       !(SQL)
       !(Templates)
     RemoveDotFiles: true
