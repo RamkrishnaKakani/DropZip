@@ -12,8 +12,8 @@ variables:
     DropLocation : C:\Users\R888066\Desktop\DropLocation\Master
 
   ${{ if and(eq(variables['Build.SourceBranchName'], 'development'), ne(variables['Build.Reason'], 'PullRequest')) }}:
-    PatchVersion : $[counter(variables['PatchVersion'],0)]
-    BuildVersion: $(MajorVersion).$(MinorVersion).$(PatchVersion)
+    PatchVersion: $[counter(format('{0}.{1}.{2}',variables['MajorVersion'],variables['MinorVersion'],variables['PatchVersion']), 0)]
+    BuildVersion: Optimus_Toolkit_dev_v$(MajorVersion).$(MinorVersion).$(PatchVersion)
     DropLocation : C:\Users\R888066\Desktop\DropLocation\Dev
 
 steps:
