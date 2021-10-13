@@ -8,8 +8,8 @@ pr:
 variables:
   ${{ if and(eq(variables['Build.SourceBranchName'], 'master'), ne(variables['Build.Reason'], 'PullRequest')) }}:
     #PatchVersionMain : $[counter(variables['PatchVersionMain'],0)]
-    BuildVersion: $[counter(format('{0}.{1}.{2}',variables['MajorVersionMain'],variables['MinorVersionMain'],variables['PatchVersionMain']), 0)]
-    #BuildVersion: $(MajorVersionMain).$(MinorVersionMain).$(PatchVersionMain)
+    PatchVersionMain: $[counter(format('{0}.{1}.{2}',variables['MajorVersionMain'],variables['MinorVersionMain'],variables['PatchVersionMain']), 0)]
+    BuildVersion: $(MajorVersionMain).$(MinorVersionMain).$(PatchVersionMain)
     DropLocation : C:\Users\R888066\Desktop\DropLocation\Master
 
   ${{ if and(eq(variables['Build.SourceBranchName'], 'development'), ne(variables['Build.Reason'], 'PullRequest')) }}:
