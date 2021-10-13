@@ -2,6 +2,9 @@ trigger:
 - master
 - development
 
+pr:
+- none
+
 variables:
   ${{ if and(eq(variables['Build.SourceBranchName'], 'master'), ne(variables['Build.Reason'], 'PullRequest')) }}:
     PatchVersionMain : $[counter(variables['PatchVersionMain'],0)]
