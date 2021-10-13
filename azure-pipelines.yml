@@ -39,6 +39,8 @@ steps:
     Contents: | 
       *.yml
       Readme.txt
+      !(SQL)
+      !(Templates)
     RemoveDotFiles: true
 
 - task: ArchiveFiles@2
