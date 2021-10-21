@@ -45,7 +45,7 @@ steps:
 - task: ArchiveFiles@2
   displayName: 'Drop Zip file At DropLocation'
   inputs:
-    rootFolderOrFile: '$(Build.SourcesDirectory)'
+    rootFolderOrFile: '$(Build.SourcesDirectory)/SQL'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(DropLocation)/$(BuildVersion).zip'
