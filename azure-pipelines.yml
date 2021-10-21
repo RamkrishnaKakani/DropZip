@@ -38,9 +38,7 @@ steps:
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: | 
-      *.yml
-      Readme.txt
-      !(SQL)
+      !("SQL")
     RemoveDotFiles: true
 
 - task: ArchiveFiles@2
