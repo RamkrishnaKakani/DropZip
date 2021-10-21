@@ -8,7 +8,7 @@ pr:
 variables:
   ${{ if and(eq(variables['Build.SourceBranchName'], 'master'), ne(variables['Build.Reason'], 'PullRequest')) }}:
     #PatchVersionMain : $[counter(variables['PatchVersionMain'],0)]
-    PatchVersionMain: $[counter(format('{0}.{1}.{2}',variables['MajorVersionMain'],variables['MinorVersionMain'],variables['PatchVersionMain']), 0)]
+    PatchVersionMain: $[counter(format('{0}.{1}.{2}',variables['MajorVersionMain'],variables['MinorVersionMain'],variables['PatchVersionMain']), variables['PatchVersionMain'])]
     BuildVersion: $(MajorVersionMain).$(MinorVersionMain).$(PatchVersionMain)
     DropLocation : C:\Users\R888066\Desktop\DropLocation\Master
 
