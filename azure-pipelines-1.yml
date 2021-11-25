@@ -22,7 +22,7 @@ steps:
     targetType: 'inline'
     script: |
       Write-Host "Printing Build Commit SHA : "
-      $SHA = $(Build.SourceVersion)
+      $SHA = "$(Build.SourceVersion)"
       Write-Host $SHA
       Write-Host "------------------------------------------"
       $commit = curl.exe -X GET -u $(User):$(GitToken) https://api.github.com/repos/$(Organization)/$(Repo_Name)/commits/$SHA/pulls | ConvertFrom-Json
