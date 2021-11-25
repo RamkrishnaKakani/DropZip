@@ -22,20 +22,23 @@ steps:
     targetType: 'inline'
     script: |
       Write-Host "Printing Build Commit SHA : "
-      $SHA = $(Build.SourceVersion)
+      $SHA = "$(Build.SourceVersion)"
       Write-Host $SHA
       Write-Host "------------------------------------------"
-      $commit = curl.exe -X GET -u $(User):$(GitToken) https://api.github.com/repos/$(Organization)/$(Repo_Name)/commits/$SHA/pulls | ConvertFrom-Json
+
+      $commit = curl -X GET -u $(User):$(GitToken) https://api.github.com/repos/$(Organization)/$(Repo_Name)/commits/$SHA/pulls | ConvertFrom-Json
       $branchURL = $commit.url
       Write-Host "Branch URL to be Deleted : "
       Write-Host $branchURL
       Write-Host "------------------------------------------"
-      $prinfo   = curl.exe -X GET -u $(User):$(GitToken) $branchURL | ConvertFrom-Json
+
+      $prinfo   = curl -X GET -u $(User):$(GitToken) $branchURL | ConvertFrom-Json
       $branchtobedeleted = $prinfo.head.ref    
       Write-Host "Branch to be Deleted : " 
       Write-Host $branchtobedeleted
       Write-Host "------------------------------------------"
-      curl.exe -s -X DELETE -u RamkrishnaKakani:$GitToken https://api.github.com/repos/RamkrishnaKakani/DropZip/git/refs/heads/$branch
+
+      curl -s -X DELETE -u RamkrishnaKakani:$GitToken https://api.github.com/repos/RamkrishnaKakani/DropZip/git/refs/heads/$branchtobedeleted
       Write-Host "Branch Deleted..!" 
       Write-Host "------------------------------------------"
-  condition: and(succeeded(), eq(variables['Build.Reason'], 'IndivisualCI'))    
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'))    
