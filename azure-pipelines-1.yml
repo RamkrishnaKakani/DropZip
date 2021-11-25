@@ -1,0 +1,20 @@
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Host "Hello World"
+      Write-Host $Build.SourceBranch
+      Write-Host $Build.SourceBranchName
+      Write-Host $Build.SourceVersion
+      Write-Host $Build.SourceVersionMessage
+      Write-Host $Build.QueuedBy
