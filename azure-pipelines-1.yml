@@ -38,4 +38,4 @@ steps:
       curl.exe -s -X DELETE -u RamkrishnaKakani:$GitToken https://api.github.com/repos/RamkrishnaKakani/DropZip/git/refs/heads/$branch
       Write-Host "Branch Deleted..!" 
       Write-Host "------------------------------------------"
-  condition: and(succeeded(), eq(variables['Build.Reason'], 'IndivisualCI'))    
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'))    
