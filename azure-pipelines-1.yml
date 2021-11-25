@@ -1,20 +1,41 @@
 trigger:
 - master
 
+pr:
+- none
+
 pool:
   vmImage: ubuntu-latest
+  
+variables:
+- name: User
+  value: RamkrishnaKakani
+- name: Organization
+  value: RamkrishnaKakani
+- name: Repo_Name
+  value: DropZip
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
 - task: PowerShell@2
+  displayName: 'Delete Branch'
   inputs:
     targetType: 'inline'
     script: |
-      Write-Host "Hello World"
-      Write-Host $(Build.SourceBranch)
-      Write-Host $(Build.SourceBranchName)
-      Write-Host $(Build.SourceVersion)
-      Write-Host $(Build.SourceVersionMessage)
-      Write-Host $(Build.QueuedBy)
+      Write-Host "Printing Build Commit SHA : "
+      $SHA = $(Build.SourceVersion)
+      Write-Host $SHA
+      Write-Host "------------------------------------------"
+      $commit = curl.exe -X GET -u $(User):$(GitToken) https://api.github.com/repos/$(Organization)/$(Repo_Name)/commits/$SHA/pulls | ConvertFrom-Json
+      $branchURL = $commit.url
+      Write-Host "Branch URL to be Deleted : "
+      Write-Host $branchURL
+      Write-Host "------------------------------------------"
+      $prinfo   = curl.exe -X GET -u $(User):$(GitToken) $branchURL | ConvertFrom-Json
+      $branchtobedeleted = $prinfo.head.ref    
+      Write-Host "Branch to be Deleted : " 
+      Write-Host $branchtobedeleted
+      Write-Host "------------------------------------------"
+      curl.exe -s -X DELETE -u RamkrishnaKakani:$GitToken https://api.github.com/repos/RamkrishnaKakani/DropZip/git/refs/heads/$branch
+      Write-Host "Branch Deleted..!" 
+      Write-Host "------------------------------------------"
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'IndivisualCI'))    
