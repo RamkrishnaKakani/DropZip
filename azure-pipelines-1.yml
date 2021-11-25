@@ -13,8 +13,8 @@ steps:
     targetType: 'inline'
     script: |
       Write-Host "Hello World"
-      Write-Host $Build.SourceBranch
-      Write-Host $Build.SourceBranchName
-      Write-Host $Build.SourceVersion
-      Write-Host $Build.SourceVersionMessage
-      Write-Host $Build.QueuedBy
+      Write-Host $(Build.SourceBranch)
+      Write-Host $(Build.SourceBranchName)
+      Write-Host $(Build.SourceVersion)
+      Write-Host $(Build.SourceVersionMessage)
+      Write-Host $(Build.QueuedBy)
