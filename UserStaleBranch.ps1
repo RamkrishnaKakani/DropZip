@@ -49,7 +49,7 @@ foreach( $branch in $remoteBranches)
     if($today -gt $commitDate)
     {  
         $details = @{
-             "Branch Name" = $branch
+             "BranchName" = $branch
              "Last Commit by" = $commiterName
              "Email ID" = $userEmailID
              "Last Commit date" = $lastCommitDate
@@ -84,16 +84,16 @@ foreach( $branch in $remoteBranches)
 Write-Host "`nBranches To Be Deleted :"$branchesToBeDeleted.Count
 
 foreach( $branchTobeDeleted in $branchesToBeDeleted)
-{    write-Host $branchTobeDeleted    }
+{    write-Host $branchTobeDeleted.BranchName    }
      
 if( $isDeleteBraches -eq "True" -or $isDeleteBraches -eq "true" )
 {
   Write-Host "`nDeleting Stale Branches..."
   foreach( $branchTobeDeleted in $branchesToBeDeleted)
   {
-      $branchUrl = "https://api.github.com/repos/$ownerName/$repoName/git/refs/heads/$branchTobeDeleted"
+      $branchUrl = "https://api.github.com/repos/$ownerName/$repoName/git/refs/heads/$branchTobeDeleted.BranchName"
       $Delete = Invoke-RestMethod -Headers $Headers -uri $branchUrl -Method Delete
-      write-Host "Branch Deleted : "$branchTobeDeleted
+      write-Host "Branch Deleted : "$branchTobeDeleted.BranchName
   }
 }
 else
