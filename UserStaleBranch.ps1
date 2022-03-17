@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param (
   [parameter(Mandatory=$False)]
-  [string]$isDeleteBraches
+  [bool]$isDeleteBraches = $False,
 )
 
 #Defining Arrays
@@ -97,4 +97,8 @@ if($isDeleteBraches)
       $Delete = Invoke-RestMethod -Headers $Headers -uri $branchUrl -Method Delete
       write-Host "Branch Deleted : "$branchTobeDeleted
   }
+}
+else
+{
+    Write-Host "To Delete Stale Branches, re-Run GitHub Action with input isDeleteBranch = $True"
 }
