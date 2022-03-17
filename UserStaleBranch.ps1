@@ -28,9 +28,7 @@ $remoteBranches = $remoteBranches | Where-Object { ($_ -notlike 'remotes/origin/
                                               -and ($_ -ne 'remotes/origin/development') `
                                               -and ($_ -ne 'remotes/origin/master') }
                                               
-$remoteBranches
-
-Write-Host "`n`nStarting to calculate stale Branches..."
+Write-Host "`nStarting to calculate stale Branches..."
 
 foreach( $branch in $remoteBranches)
 {
@@ -62,8 +60,7 @@ foreach( $branch in $remoteBranches)
 
         #Determining Stale User Branches
         if( $branch -match "user/" -or $branch -match "User/" -or $branch -match "users/" -or $branch -match "Users/")
-        {         
-            sleep(1)   
+        {          
             [void]$staleUserBranches.Add($branchDetails)
 
             $userUrl ="https://api.github.com/search/issues?q=is:pr+repo:$ownerName/$repoName+head:$branch+state:closed"
@@ -84,16 +81,7 @@ foreach( $branch in $remoteBranches)
     }
 }
 
-Write-Host "`nUser Branches :"$staleUserBranches
-Write-Host "`nBranches To Be Deleted :"$branchesToBeDeleted
-
-Write-Host "`nGenerating Output Files"
-
-#Generate List of All Stale Branches
-#$results | export-csv -Path .\BS_AllStalesBranches.csv -NoTypeInformation
-
-#Generate List of User Stale Branches
-#$staleUserBranches | export-csv -Path .\BS_UserStalesBranches.csv -NoTypeInformation
+Write-Host "`nBranches To Be Deleted :"
 
 #Generate List of User Stale Branches which we can Delete Automatically
 $branchesToBeDeleted | export-csv -Path BE_branchesToBeDeleted.csv -NoTypeInformation
