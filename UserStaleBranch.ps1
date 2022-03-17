@@ -1,3 +1,9 @@
+[CmdletBinding()]
+param (
+  [parameter(Mandatory=$False)]
+  [string]$isDeleteBraches
+)
+
 #Defining Arrays
 [System.Collections.ArrayList]$results = @()
 [System.Collections.ArrayList]$staleUserBranches = @()
@@ -84,10 +90,23 @@ Write-Host "`nBranches To Be Deleted :"$branchesToBeDeleted
 Write-Host "`nGenerating Output Files"
 
 #Generate List of All Stale Branches
-$results | export-csv -Path .\BS_AllStalesBranches.csv -NoTypeInformation
+#$results | export-csv -Path .\BS_AllStalesBranches.csv -NoTypeInformation
 
 #Generate List of User Stale Branches
-$staleUserBranches | export-csv -Path .\BS_UserStalesBranches.csv -NoTypeInformation
+#$staleUserBranches | export-csv -Path .\BS_UserStalesBranches.csv -NoTypeInformation
 
 #Generate List of User Stale Branches which we can Delete Automatically
-$branchesToBeDeleted | export-csv -Path .\BE_branchesToBeDeleted.csv -NoTypeInformation
+$branchesToBeDeleted | export-csv -Path BE_branchesToBeDeleted.csv -NoTypeInformation
+
+$fileData = import-csv -Path BE_branchesToBeDeleted.csv
+$fileData
+
+if($isDeleteBraches)
+{
+  foreach( $branchTobeDeleted in $branchesToBeDeleted)
+  {
+      $branchUrl = "https://api.github.com/repos/$ownerName/$repoName/git/refs/heads/$branchTobeDeleted"
+      $Delete = Invoke-RestMethod -Headers $Headers -uri $branchUrl -Method Delete
+      write-Host "Branch Deleted : "$branchTobeDeleted
+  }
+}
