@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param (
   [parameter(Mandatory=$False)]
-  [bool]$isDeleteBraches = $False,
+  [bool]$isDeleteBraches = $False
 )
 
 #Defining Arrays
