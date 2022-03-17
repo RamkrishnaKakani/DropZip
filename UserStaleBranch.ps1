@@ -81,7 +81,7 @@ foreach( $branch in $remoteBranches)
     }
 }
 
-Write-Host "`nBranches To Be Deleted :"
+Write-Host "`nBranches To Be Deleted :"$branchesToBeDeleted.Count
 
 #Generate List of User Stale Branches which we can Delete Automatically
 $branchesToBeDeleted | export-csv -Path BE_branchesToBeDeleted.csv -NoTypeInformation
