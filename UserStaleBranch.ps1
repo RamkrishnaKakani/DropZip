@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param (
   [parameter(Mandatory=$False)]
-  [bool]$isDeleteBraches = $False
+  [string]$isDeleteBraches = "False"
 )
 
 #Defining Arrays
@@ -83,14 +83,12 @@ foreach( $branch in $remoteBranches)
 
 Write-Host "`nBranches To Be Deleted :"$branchesToBeDeleted.Count
 
-#Generate List of User Stale Branches which we can Delete Automatically
-$branchesToBeDeleted | export-csv -Path BE_branchesToBeDeleted.csv -NoTypeInformation
-
-$fileData = import-csv -Path BE_branchesToBeDeleted.csv
-$fileData
-
-if($isDeleteBraches)
+foreach( $branchTobeDeleted in $branchesToBeDeleted)
+{    write-Host $branchTobeDeleted    }
+     
+if( $isDeleteBraches -eq "True" -or $isDeleteBraches -eq "true" )
 {
+  Write-Host "`nDeleting Stale Branches..."
   foreach( $branchTobeDeleted in $branchesToBeDeleted)
   {
       $branchUrl = "https://api.github.com/repos/$ownerName/$repoName/git/refs/heads/$branchTobeDeleted"
@@ -99,6 +97,4 @@ if($isDeleteBraches)
   }
 }
 else
-{
-    Write-Host "To Delete Stale Branches, re-Run GitHub Action with input isDeleteBranch = $True"
-}
+{    Write-Host "To Delete Stale Branches, re-Run GitHub Action with input isDeleteBranch = $True"    }
