@@ -2,6 +2,10 @@ name: DeleteUserStaleBranch
 
 on:
   workflow_dispatch:
+    inputs:
+      deleteStaleBranches:
+        description: 'Do You Want to Delete Stale Branches?'
+        default: 'false'
 
 jobs:
   build:
