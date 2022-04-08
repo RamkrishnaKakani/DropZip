@@ -5,7 +5,7 @@ on:
     inputs:
       deleteStaleBranches:
         description: 'Do You Want to Delete Stale Branches?'
-        default: 'false'
+        default: 'False'
 
 jobs:
   build:
