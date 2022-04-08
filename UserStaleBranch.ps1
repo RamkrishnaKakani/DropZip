@@ -92,6 +92,7 @@ if( $isDeleteBraches -eq "True" -or $isDeleteBraches -eq "true" )
   foreach( $branchTobeDeleted in $branchesToBeDeleted)
   {
       $branchUrl = "https://api.github.com/repos/$ownerName/$repoName/git/refs/heads/$branchTobeDeleted.BranchName"
+      $branchUrl
       $Delete = Invoke-RestMethod -Headers $Headers -uri $branchUrl -Method Delete
       write-Host "Branch Deleted : "$branchTobeDeleted.BranchName
   }
