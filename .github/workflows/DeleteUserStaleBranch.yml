@@ -19,4 +19,4 @@ jobs:
       - name: StaleBranch
         shell: pwsh
         run: |
-          ./UserStaleBranch.ps1
+          ./UserStaleBranch.ps1 -isDeleteBraches ${{ github.event.inputs.deleteStaleBranches }}
