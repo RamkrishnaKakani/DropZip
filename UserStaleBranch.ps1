@@ -43,7 +43,7 @@ foreach( $branch in $remoteBranches)
     $userEmailID = $info.commit.commit.author.email
 
     $commitDate = (Get-Date $lastCommitDate)
-    $today = (Get-Date).AddDays(-90)
+    $today = (Get-Date).AddDays(-100)
 
     #Determine whether branch is stale or not
     if($today -gt $commitDate)
@@ -57,27 +57,22 @@ foreach( $branch in $remoteBranches)
 
         $branchDetails = New-Object PSObject -Property $details
         [void]$results.Add($branchDetails)
+        [void]$staleUserBranches.Add($branchDetails)
 
-        #Determining Stale User Branches
-        if( $branch -match "user/" -or $branch -match "User/" -or $branch -match "users/" -or $branch -match "Users/")
-        {          
-            [void]$staleUserBranches.Add($branchDetails)
+        $userUrl ="https://api.github.com/search/issues?q=is:pr+repo:$ownerName/$repoName+head:$branch+state:closed"
+        $userBranchDetails = Invoke-RestMethod -Headers $Headers -uri $userUrl -Method Get
 
-            $userUrl ="https://api.github.com/search/issues?q=is:pr+repo:$ownerName/$repoName+head:$branch+state:closed"
-            $userBranchDetails = Invoke-RestMethod -Headers $Headers -uri $userUrl -Method Get
+        if($userBranchDetails.items.Number)
+        {
+            $prNumber = $userBranchDetails.items.Number
+            $prUrl = "https://api.github.com/repos/$ownerName/$repoName/pulls/$prNumber"
+            $prDetails = Invoke-RestMethod -Headers $Headers -uri $prUrl -Method Get
 
-            if($userBranchDetails.items.Number)
+            if($prDetails.merged -eq "True")
             {
-                $prNumber = $userBranchDetails.items.Number
-                $prUrl = "https://api.github.com/repos/$ownerName/$repoName/pulls/$prNumber"
-                $prDetails = Invoke-RestMethod -Headers $Headers -uri $prUrl -Method Get
-
-                if($prDetails.merged -eq "True")
-                {
-                    [void]$branchesToBeDeleted.Add($branchDetails)
-                }
+                [void]$branchesToBeDeleted.Add($branchDetails)
             }
-        }
+        }    
     }
 }
 
@@ -89,12 +84,14 @@ foreach( $branchTobeDeleted in $branchesToBeDeleted)
 if( $isDeleteBraches -eq "True" -or $isDeleteBraches -eq "true" )
 {
   Write-Host "`nDeleting Stale Branches..."
+  <#
   foreach( $branchTobeDeleted in $branchesToBeDeleted)
   {
       $branchUrl = "https://api.github.com/repos/$ownerName/$repoName/git/refs/heads/$branchTobeDeleted.BranchName"
       $Delete = Invoke-RestMethod -Headers $Headers -uri $branchUrl -Method Delete
       write-Host "Branch Deleted : "$branchTobeDeleted.BranchName
   }
+  #>
 }
 else
 {    Write-Host "To Delete Stale Branches, re-Run GitHub Action with input isDeleteBranch = $True"    }
