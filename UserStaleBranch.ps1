@@ -26,7 +26,8 @@ $remoteBranches = git branch -a | Where-Object {$_ -like '*remotes/origin/*'} | 
 $remoteBranches = $remoteBranches | Where-Object { ($_ -notlike 'remotes/origin/HEAD*') `
                                               -and ($_ -ne 'remotes/origin/main') `
                                               -and ($_ -ne 'remotes/origin/development') `
-                                              -and ($_ -ne 'remotes/origin/master') }
+                                              -and ($_ -ne 'remotes/origin/master')`
+                                              -and ($_ -notlike 'remotes/origin/release-*') }
                                               
 Write-Host "`nStarting to calculate stale Branches..."
 
