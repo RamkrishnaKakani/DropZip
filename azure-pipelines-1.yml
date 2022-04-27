@@ -1,19 +1,13 @@
-trigger:
-- master
-
-pr:
-- none
-
 pool:
   vmImage: ubuntu-latest
   
-variables:
-- name: User
-  value: RamkrishnaKakani
-- name: Organization
-  value: RamkrishnaKakani
-- name: Repo_Name
-  value: DropZip
+# variables:
+# - name: User
+#   value: RamkrishnaKakani
+# - name: Organization
+#   value: RamkrishnaKakani
+# - name: Repo_Name
+#   value: DropZip
 
 steps:
   - task: DotNetCoreCLI@2  
