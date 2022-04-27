@@ -29,7 +29,9 @@ steps:
     enabled: true
     displayName: Set Version    
     
-  - script: nbgv get-version -v version
+  - powershell: |
+        $buildversion = nbgv get-version -v version
+        $buildversion
     enabled: true
     displayName: Get Version 
     
