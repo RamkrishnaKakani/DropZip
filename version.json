@@ -1,5 +1,6 @@
 {
   "version": "1.0",
+  "versionHeight": "1",
   "cloudBuild": {
     "buildNumber": {
       "enabled": true
