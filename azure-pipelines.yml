@@ -26,14 +26,14 @@ steps:
       arguments: install --tool-path . nbgv
       
   - script: nbgv cloud
-    enabled: true
+    enabled: false
     displayName: Set Version    
     
-  - script: nbgv cloud -v --help
+  - script: nbgv cloud --c 
     enabled: true
     displayName: Set Version Info    
     
-  - script: nbgv get-version
+  - script: nbgv get-version --help
     enabled: true
     displayName: Get Version    
       
