@@ -2,7 +2,7 @@
   "version": "1.0",
   "versionHeight": "1",
   "publicReleaseRefSpec": [
-      "^refs/heads/main$"
+      "^refs/heads/master$"
   ],
   "cloudBuild": {
     "buildNumber": {
