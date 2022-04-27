@@ -29,14 +29,13 @@ steps:
     enabled: false
     displayName: Set Version    
     
-  - script: nbgv cloud --c 
-    enabled: true
-    displayName: Set Version Info    
-    
   - script: nbgv get-version --help
     enabled: true
-    displayName: Get Version    
-      
+    displayName: Get Version 
+    
+  - script: nbgv cloud -c 
+    enabled: true
+    displayName: Set Version Info          
     
 # - powershell: |
 #     Write-Verbose -Verbose "##vso[build.updatebuildnumber]$(BuildVersion)"
