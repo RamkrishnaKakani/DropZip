@@ -31,9 +31,9 @@ steps:
     
   - powershell: |
         $buildversion = nbgv get-version -v version
-        $buildversion
+        Write-Host "Hello "$buildversion
     enabled: true
-    displayName: Get Version 
+    displayName: Powershell Get Version 
     
 #   - script: nbgv cloud -c 
 #     enabled: true
