@@ -1,6 +1,9 @@
 {
   "version": "1.0",
   "versionHeight": "1",
+  "publicReleaseRefSpec": [
+      "^refs/heads/main$"
+  ],
   "cloudBuild": {
     "buildNumber": {
       "enabled": true
