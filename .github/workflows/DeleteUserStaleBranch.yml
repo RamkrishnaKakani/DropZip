@@ -13,7 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: StaleBranch
+      - if: ${{ github.event.inputs.deleteStaleBranches }} == 'True'
+        name: StaleBranch
         shell: pwsh
         run: |
-          ./UserStaleBranch.ps1 -isDeleteBraches ${{ github.event.inputs.deleteStaleBranches }}
+          #./UserStaleBranch.ps1 -isDeleteBraches ${{ github.event.inputs.deleteStaleBranches }}
+          echo "Deleting...."
+          echo ${{ github.event.inputs.deleteStaleBranches }} 
