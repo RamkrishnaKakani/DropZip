@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - if: ${{ github.event.inputs.deleteStaleBranches == 'True' }}
+      - if: ${{ github.event.inputs.deleteStaleBranches == 'True' }} ||  ${{ github.event.inputs.deleteStaleBranches == 'true' }}
         name: StaleBranch
         shell: pwsh
         run: |
