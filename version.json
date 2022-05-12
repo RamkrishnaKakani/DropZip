@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "publicReleaseRefSpec": [
+      "^refs/heads/master$",
+      "^refs/heads/main$"
+  ],
+  "cloudBuild": {
+    "buildNumber": {
+      "enabled": true
+    }
+  }
+}

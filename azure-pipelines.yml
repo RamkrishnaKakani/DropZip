@@ -5,47 +5,66 @@ trigger:
 pr:
 - none
 
-variables:
-  ${{ if and(eq(variables['Build.SourceBranchName'], 'master'), ne(variables['Build.Reason'], 'PullRequest')) }}:
-    #PatchVersionMain : $[counter(variables['PatchVersionMain'],0)]
-    PatchVersionMain: $[counter(format('{0}.{1}.{2}',variables['MajorVersionMain'],variables['MinorVersionMain'],variables['PatchVersionMain']), variables['PatchVersionMain'])]
-    BuildVersion: $(MajorVersionMain).$(MinorVersionMain).$(PatchVersionMain)
-    DropLocation : C:\Users\R888066\Desktop\DropLocation\Master
+# variables:
+#   ${{ if and(eq(variables['Build.SourceBranchName'], 'master'), ne(variables['Build.Reason'], 'PullRequest')) }}:
+#     #PatchVersionMain : $[counter(variables['PatchVersionMain'],0)]
+#     PatchVersionMain: $[counter(format('{0}.{1}.{2}',variables['MajorVersionMain'],variables['MinorVersionMain'],variables['PatchVersionMain']), variables['PatchVersionMain'])]
+#     BuildVersion: $(MajorVersionMain).$(MinorVersionMain).$(PatchVersionMain)
+#     DropLocation : C:\Users\R888066\Desktop\DropLocation\Master
 
-  ${{ if and(eq(variables['Build.SourceBranchName'], 'development'), ne(variables['Build.Reason'], 'PullRequest')) }}:
-    PatchVersion : $[counter(variables['PatchVersion'],0)]
-    BuildVersion: $(MajorVersion).$(MinorVersion).$(PatchVersion)
-    DropLocation : C:\Users\R888066\Desktop\DropLocation\Dev
+#   ${{ if and(eq(variables['Build.SourceBranchName'], 'development'), ne(variables['Build.Reason'], 'PullRequest')) }}:
+#     PatchVersion : $[counter(variables['PatchVersion'],0)]
+#     BuildVersion: $(MajorVersion).$(MinorVersion).$(PatchVersion)
+#     DropLocation : C:\Users\R888066\Desktop\DropLocation\Dev
 
 steps:
-- powershell: |
-    Write-Verbose -Verbose "##vso[build.updatebuildnumber]$(BuildVersion)"
-  displayName: Update Build Number
+  - task: DotNetCoreCLI@2  
+    displayName: Install NBGV tool
+    inputs:
+      command: custom
+      custom: tool
+      arguments: install --tool-path . nbgv
+      
+  - script: nbgv cloud
+    enabled: false
+    displayName: Set Version    
+    
+  - script: nbgv get-version --help
+    enabled: true
+    displayName: Get Version 
+    
+  - script: nbgv cloud -c 
+    enabled: true
+    displayName: Set Version Info          
+    
+# - powershell: |
+#     Write-Verbose -Verbose "##vso[build.updatebuildnumber]$(BuildVersion)"
+#   displayName: Update Build Number
             
-- checkout: self
-  displayName: 'Download Files From Repository'
+# - checkout: self
+#   displayName: 'Download Files From Repository'
 
-- task: CopyFiles@2
-  displayName: 'Copy Readme.txt File '
-  inputs:
-    SourceFolder: '$(build.sourcesdirectory)'
-    Contents: 'Readme.txt'
-    TargetFolder: '$(DropLocation)'
-    OverWrite: true
+# - task: CopyFiles@2
+#   displayName: 'Copy Readme.txt File '
+#   inputs:
+#     SourceFolder: '$(build.sourcesdirectory)'
+#     Contents: 'Readme.txt'
+#     TargetFolder: '$(DropLocation)'
+#     OverWrite: true
 
-- task: DeleteFiles@1
-  displayName: 'Remove Unwanted Files'
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: | 
-      !("SQL")
-    RemoveDotFiles: true
+# - task: DeleteFiles@1
+#   displayName: 'Remove Unwanted Files'
+#   inputs:
+#     SourceFolder: '$(Build.SourcesDirectory)'
+#     Contents: | 
+#       !("SQL")
+#     RemoveDotFiles: true
 
-- task: ArchiveFiles@2
-  displayName: 'Drop Zip file At DropLocation'
-  inputs:
-    rootFolderOrFile: '$(Build.SourcesDirectory)/SQL'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(DropLocation)/$(BuildVersion).zip'
-    replaceExistingArchive: true
+# - task: ArchiveFiles@2
+#   displayName: 'Drop Zip file At DropLocation'
+#   inputs:
+#     rootFolderOrFile: '$(Build.SourcesDirectory)/SQL'
+#     includeRootFolder: false
+#     archiveType: 'zip'
+#     archiveFile: '$(DropLocation)/$(BuildVersion).zip'
+#     replaceExistingArchive: true
