@@ -2,12 +2,25 @@ name: DeleteUserStaleBranch
 
 on:
   workflow_dispatch:
-
+    inputs:
+      deleteStaleBranches:
+        description: 'Do You Want to Delete Stale Branches?'
+        default: 'True'
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - if: | 
+            github.event.inputs.deleteStaleBranches == 'True' || 
+            github.event.inputs.deleteStaleBranches == 'true' 
+        name: StaleBranch
+        shell: pwsh
+        run: |
+          #./UserStaleBranch.ps1 -isDeleteBraches ${{ github.event.inputs.deleteStaleBranches }}
+          echo "Deleting...."
+          echo ${{ github.event.inputs.deleteStaleBranches }} 
 
       - name: Run a one-line script
         run: echo Hello, world!
