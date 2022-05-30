@@ -23,7 +23,22 @@ steps:
     
   - script: echo "Ramkrishna"
     enabled: true
-    displayName: Get Version     
+    displayName: Get Version  
+  - script: echo "Ramkrishna"
+    enabled: true
+    displayName: Get Version   
+  - script: echo "Ramkrishna"
+    enabled: true
+    displayName: Get Version   
+  - script: echo "Ramkrishna"
+    enabled: true
+    displayName: Get Version   
+  - script: echo "Ramkrishna"
+    enabled: true
+    displayName: Get Version   
+  - script: echo "Ramkrishna"
+    enabled: true
+    displayName: Get Version                
     
 # - task: PowerShell@2
 #   displayName: 'Delete Branch'
