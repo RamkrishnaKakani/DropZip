@@ -9,12 +9,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
+      - name: Run a one-line script
+        run: echo ${{ env.GITHUB_RUN_NUMBER }}
+      
       - uses: einaregilsson/build-number@v1
         with:
-          token: ${{secrets.github_token}}
-
-      - name: Run a one-line script
-        run: echo Hello, world!
+          token: ${{secrets.GPAT_TOKEN}}
 
       - name: Run a multi-line script
         run: |
