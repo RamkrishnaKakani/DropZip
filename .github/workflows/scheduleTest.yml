@@ -10,7 +10,10 @@ jobs:
       - uses: actions/checkout@v3
       
       - name: Run a one-line script
-        run: echo ${{ env.GITHUB_RUN_NUMBER }}
+        run: |
+          echo $GITHUB_RUN_NUMBER
+          echo ${{ github.GITHUB_RUN_NUMBER }}
+          echo ${{ env.GITHUB_RUN_NUMBER }}
       
       - uses: einaregilsson/build-number@v1
         with:
