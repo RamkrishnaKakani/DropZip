@@ -3,6 +3,14 @@ name: ScheduleBuild
 on:
   workflow_dispatch:
 
+env:
+  ReleaseVersion: 22.1
+  MajorVersion: 1
+  MinorVersion: 0
+  PatchNumber: 0  
+  ${{ if and(eq(variables['Build.SourceBranchName'], 'main'), ne(variables['Build.Reason'], 'PullRequest')) }}:
+     BuildNumber: $[counter(format('{0}.{1}.{2}.{3}',variables['MajorVersion'],variables['MinorVersion'],variables['BuildNumber'],variables['Build.SourceBranchName']), 5)]
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,13 +20,8 @@ jobs:
       - name: Run a one-line script
         run: |
           echo $GITHUB_RUN_NUMBER
-          echo ${{ github.GITHUB_RUN_NUMBER }}
-          echo ${{ env.GITHUB_RUN_NUMBER }}
+          echo ${{ env.BuildNumber }}
       
-      - uses: einaregilsson/build-number@v1
-        with:
-          token: ${{secrets.GPAT_TOKEN}}
-
       - name: Run a multi-line script
         run: |
           echo Add other actions to build,
